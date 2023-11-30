@@ -28,10 +28,6 @@ def read_idx(filename):
         # 读取数据
         return np.frombuffer(f.read(), dtype=np.uint8).reshape(shape)
 
-# # 读取测试集图像和标签
-# test_images = read_idx('./dataset/t10k-images.idx3-ubyte')
-# test_labels = read_idx('./dataset/t10k-labels.idx1-ubyte')
-
 # print("test set shape:", test_images.shape)
 # print("test set labels shape:", test_labels.shape)
 
