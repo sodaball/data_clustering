@@ -32,13 +32,13 @@
 
 ## 涉及到的数据集
 
-* MNIST
+* **MNIST**（手写数字）
   * 像素：24*24
   * 样本总数：7万
   * 训练集：6万
   * 测试机：1万
   * 数据集来源：[MNIST handwritten digit database, Yann LeCun, Corinna Cortes and Chris Burges](http://yann.lecun.com/exdb/mnist/)
-* iris
+* **iris**
   * 特征数：4
   * 类别数：3
   * 样本总数：150
@@ -48,18 +48,24 @@
 
 ## 涉及的算法
 
-* Kmeans-聚类
+* **Kmeans-聚类**
   * 使用的聚类算法为KMeans，KMeans是一种无监督学习算法。无监督学习是指在没有给定标签的情况下，从输入数据中学习模式或结构的机器学习任务。KMeans算法通过将数据点分组到K个集群中，其中每个数据点都属于最近的均值（即集群的中心）来学习数据的结构。
-* DBSCAN聚类
-* TSNE降维
+* **DBSCAN聚类**
+  * DBSCAN（Density-Based Spatial Clustering of Applications with Noise）是一种基于密度的聚类算法，它能够发现任意形状的簇，并能够识别噪声点。DBSCAN的主要思想是基于样本点的密度来进行聚类，而不是像KMeans那样基于距离。
+
+* **TSNE降维**
+  * t-SNE（t-Distributed Stochastic Neighbor Embedding）是一种用于高维数据降维到低维的非线性方法。t-SNE主要用于可视化高维数据，尤其是在探索数据的局部结构时效果很好。其目标是在降维过程中保持相似性关系，即在高维空间中相似的点在低维空间中仍然保持相似。
+  * **在本次实验中，高维数据集在通过TSNE降维后能得到更好的聚类效果**。
+
 
 
 
 ## 涉及评测指标
 
-* 聚类准确率acc
-* AMI
-* silhouette
+* **聚类准确率acc**
+* **AMI**
+* **silhouette**
+* **聚类结果可视化**（主观）
 
 
 
