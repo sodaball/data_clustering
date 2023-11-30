@@ -2,8 +2,8 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from umap import UMAP
 from sklearn.cluster import KMeans
+import pandas as pd
 from sklearn.metrics import accuracy_score, adjusted_mutual_info_score, silhouette_score
-from sklearn.datasets import load_wine
 import matplotlib.pyplot as plt
 
 # 解决UserWarning
@@ -11,9 +11,12 @@ import os
 os.environ["OMP_NUM_THREADS"] = '1'
 
 # 加载Wine数据集
-wine = load_wine()
-X = wine.data
-y = wine.target
+# 从本地加载 Wine 数据集
+# print(wine_df.columns)    # 打印 DataFrame 的列名
+wine_path = "./data/wine/wine.data"
+wine_df = pd.read_csv(wine_path, header=None)  # 不使用列名
+X = wine_df.iloc[:, 1:].values  # 选择除第一列外的所有列作为特征
+y = wine_df.iloc[:, 0].values  # 选择第一列作为目标
 
 # 使用PCA进行降维
 pca = PCA(n_components=2)

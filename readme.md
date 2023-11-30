@@ -27,6 +27,8 @@
 > scikit-learn	1.3.2
 >
 > scipy	1.10.1
+>
+> pandas	2.0.3
 
 
 
@@ -38,11 +40,11 @@
   * 训练集：6万
   * 测试机：1万
   * 数据集来源：[MNIST handwritten digit database, Yann LeCun, Corinna Cortes and Chris Burges](http://yann.lecun.com/exdb/mnist/)
-* **iris**
-  * 特征数：4
+* **wine**
+  * 特征数：13
   * 类别数：3
-  * 样本总数：150
-  * 数据集来源：[Iris - UCI Machine Learning Repository](http://archive.ics.uci.edu/dataset/53/iris)
+  * 样本总数：178
+  * 数据集来源：[Wine - UCI Machine Learning Repository](http://archive.ics.uci.edu/dataset/109/wine)
 
 
 
@@ -55,7 +57,12 @@
 
 * **TSNE降维**
   * t-SNE（t-Distributed Stochastic Neighbor Embedding）是一种用于高维数据降维到低维的非线性方法。t-SNE主要用于可视化高维数据，尤其是在探索数据的局部结构时效果很好。其目标是在降维过程中保持相似性关系，即在高维空间中相似的点在低维空间中仍然保持相似。
-  * **在本次实验中，高维数据集在通过TSNE降维后能得到更好的聚类效果**。
+
+* **PCA降维**
+  * PCA 是一种线性降维技术，它通过找到数据中的主要方差方向（主成分），并将数据投影到这些主成分上来实现降维。主成分是数据中方差最大的方向，它们是数据中的线性组合。
+
+* **UMAP降维**
+  * UMAP 是一种非线性降维算法，它可以在保留数据的局部和全局结构的同时，对高维数据进行更灵活的降维。
 
 
 
@@ -242,17 +249,64 @@
 
 
 
-### 2. 对iris数据集进行聚类分析
+### 2. 对wine数据集进行不同降维方式后聚类分析
 
-使用sklearn的库对iris数据集进行读取和聚类分析，分析出iris数据集中的类别
+#### 2.1 方法一：PCA降维 + KMeans聚类
 
-算法步骤：
+##### 2.1.1 PCA降维
 
-1. 随机选择K个点作为初始的聚类中心
-2. 对于数据集中的每个点，计算其到每个聚类中心的距离，并将其分配到最近的聚类中心
-3. 更新每个聚类的中心点，使其成为该聚类所有点的平均值
-4. 重复步骤2和3，直到聚类中心不再发生变化或达到预设的最大迭代次数
+​	PCA（Principal Component Analysis）是一种用于线性降维的方法。在wine数据集的上下文中，PCA可以用于将13个特征（酒的化学成分）降维到更少的维度，以便更容易进行可视化和聚类。PCA找到数据中的主成分，这些主成分是原始特征的线性组合，被排序以表示数据中的最大方差。
 
-结果如下所示：
-![Alt text](./result/iris_cluster.png)
+##### 2.1.1 聚类结果
 
+| 指标             | score |
+| ---------------- | ----- |
+| accuracy         | 0.539 |
+| AMI              | 0.422 |
+| silhouette score | 0.572 |
+
+##### 2.1.2 聚类结果可视化
+
+![wine_kmeans_pca_cluster](result/wine_kmeans_pca_cluster.png)
+
+#### 2.2 方法二：TSNE降维 + KMeans聚类
+
+##### 2.2.2 聚类结果
+
+| 指标             | score |
+| ---------------- | ----- |
+| accuracy         | 0.551 |
+| AMI              | 0.379 |
+| silhouette score | 0.619 |
+
+##### 2.2.3 聚类结果可视化
+
+![wine_kmeans_tsne_cluster](result/wine_kmeans_tsne_cluster.png)
+
+#### 2.3 方法二：UMAP降维 + KMeans聚类
+
+##### 2.3.1 UMAP降维
+
+UMAP（Uniform Manifold Approximation and Projection）是一种非线性降维算法，它在保留数据的局部和全局结构方面表现出色。在wine数据集中，UMAP可以用于发现潜在的非线性关系和聚类结构，同时保留数据的高维特征。
+
+##### 2.3.2 聚类结果
+
+| 指标             | score |
+| ---------------- | ----- |
+| accuracy         | 0.056 |
+| AMI              | 0.388 |
+| silhouette score | 0.712 |
+
+##### 2.3.3 聚类结果可视化
+
+![wine_kmeans_umap_cluster](result/wine_kmeans_umap_cluster.png)
+
+#### 2.4 实验结果对比分析
+
+| 指标             | PCA降维 | TSNE降维 | UMAP降维 |
+| ---------------- | ------- | -------- | -------- |
+| accuracy         | 0.539   | 0.551    | 0.056    |
+| AMI              | 0.422   | 0.379    | 0.388    |
+| silhouette score | 0.572   | 0.619    | 0.712    |
+
+​	不同降维方法在这个实验中表现出不同的优势。TSNE在准确度上稍微领先，UMAP在轮廓系数上表现最好。选择降维方法时，需要根据具体任务和数据特征来权衡各个指标。例如，如果聚类是主要目标，那么UMAP可能是更好的选择；如果准确度更为关键，那么TSNE可能更适合。
